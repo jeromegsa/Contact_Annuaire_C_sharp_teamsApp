@@ -1,0 +1,44 @@
+﻿@page "/annuaire"
+@using contact_annuaire.Models
+@using contact_annuaire.Services
+@using contact_annuaire.Components.Shared
+@inject ContactService ContactService
+
+<h1>📒 Mon Annuaire</h1>
+<p>@contacts.Count contact(s) enregistré(s)</p>
+
+@* Formulaire pour ajouter *@
+<FormulaireContact OnAjouter="AjouterContact" />
+
+@* Liste des contacts *@
+<div class="grille">
+    @foreach (var contact in contacts)
+    {
+        <CarteContact Contact="contact" OnSupprimer="SupprimerContact" />
+    }
+</div>
+
+@code {
+    private List<Contact> contacts = new();
+
+    // Chargement initial des contacts
+    protected override void OnInitialized()
+    {
+        contacts = ContactService.GetContacts();
+    }
+
+    // Ajouter un contact
+    private void AjouterContact(Contact contact)
+    {
+        ContactService.AjouterContact(contact);
+        contacts = ContactService.GetContacts(); // rafraîchit la liste
+        
+    }
+
+    // Supprimer un contact
+    private void SupprimerContact(int id)
+    {
+        ContactService.SupprimerContact(id);
+        contacts = ContactService.GetContacts(); // rafraîchit la liste
+    }
+}

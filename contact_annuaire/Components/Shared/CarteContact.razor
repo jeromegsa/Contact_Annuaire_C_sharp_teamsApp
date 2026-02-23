@@ -1,0 +1,26 @@
+﻿@using contact_annuaire.Models
+
+<div class="carte">
+    <div class="carte-header">
+        <span class="initiales">@contact.Prenom[0] ]@contact.Nom[0]</span>
+        <div>
+            <h3>@contact.Prenom @contact.Nom</h3>
+            <p>@contact.Email</p>
+        </div>
+    </div>
+        <p> @contact.Telephone</p>
+
+
+        <button class="btn-supprimer" @onclick="()=>OnSupprimer.InvokeAsync(contact.Id)">
+        Supprimer
+    </button>
+</div>
+@* // ← [Parameter] : reçoit le contact depuis le parent *@ 
+@code {
+    [Parameter]
+    public Contact contact { get; set; }
+
+
+    [Parameter]
+    public EventCallback<int> OnSupprimer{ get; set; }
+}

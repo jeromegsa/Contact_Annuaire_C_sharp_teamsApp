@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36623.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "contact_annuaire", "contact_annuaire\contact_annuaire.csproj", "{6FE1F6D8-1925-C894-A5A0-00CF358FB27E}"
+EndProject
+Project("{A9E3F50B-275E-4AF7-ADCE-8BE12D41E305}") = "M365Agent", "M365Agent\M365Agent.atkproj", "{B069B3BD-F6BC-CC40-82AB-3FCC2EA50FDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6FE1F6D8-1925-C894-A5A0-00CF358FB27E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FE1F6D8-1925-C894-A5A0-00CF358FB27E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FE1F6D8-1925-C894-A5A0-00CF358FB27E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FE1F6D8-1925-C894-A5A0-00CF358FB27E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B069B3BD-F6BC-CC40-82AB-3FCC2EA50FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B069B3BD-F6BC-CC40-82AB-3FCC2EA50FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B069B3BD-F6BC-CC40-82AB-3FCC2EA50FDF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B069B3BD-F6BC-CC40-82AB-3FCC2EA50FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B069B3BD-F6BC-CC40-82AB-3FCC2EA50FDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B069B3BD-F6BC-CC40-82AB-3FCC2EA50FDF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {265168EF-51A0-488D-AF54-1C4EE845503C}
+	EndGlobalSection
+EndGlobal

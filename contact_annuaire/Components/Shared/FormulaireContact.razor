@@ -1,0 +1,32 @@
+﻿@using contact_annuaire.Models
+
+<div class="formulaire">
+    <h3> Ajouter un contact</h3>
+
+    <input placeholder="Prénom" @bind="nouveauContact.Prenom" />
+    <input placeholder="Nom" @bind="nouveauContact.Nom" />
+    <input placeholder="Email" @bind="nouveauContact.Email" />
+    <input placeholder="Téléphone" @bind="nouveauContact.Telephone" />
+    <button @onclick="Soumettre">Ajouter</button>
+</div>
+
+
+@code{
+    // Le contact en cours de saisie
+    private Contact nouveauContact = new Contact();
+
+    [Parameter]
+
+    public EventCallback<Contact> OnAjouter { get; set; }
+
+    private async Task Soumettre()
+    {
+        // Vérifie que le prénom et nom sont remplis
+        if(!string.IsNullOrEmpty(nouveauContact.Prenom)&& !string.IsNullOrEmpty(nouveauContact.Nom))
+        {
+            await OnAjouter.InvokeAsync(nouveauContact);
+            // Réinitialise le formulaire
+            nouveauContact = new Contact();
+        }
+    }
+}
