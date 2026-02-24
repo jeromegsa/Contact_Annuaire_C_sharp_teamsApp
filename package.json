@@ -1,0 +1,27 @@
+{
+  "name": "contact_annuaire",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+
+
+"scripts": {
+    "css:build": "npx tailwindcss -i ./contact_annuaire/wwwroot/css/tailwind.css -o ./contact_annuaire/wwwroot/css/app.css --minify",
+    "css:watch": "npx tailwindcss -i ./contact_annuaire/wwwroot/css/tailwind.css -o ./contact_annuaire/wwwroot/css/app.css --watch"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeromegsa/Contact_Annuaire_C_sharp_teamsApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeromegsa/Contact_Annuaire_C_sharp_teamsApp/issues"
+  },
+  "homepage": "https://github.com/jeromegsa/Contact_Annuaire_C_sharp_teamsApp#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}

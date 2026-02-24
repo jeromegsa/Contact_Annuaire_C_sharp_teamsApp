@@ -4,61 +4,89 @@
 @using contact_annuaire.Components.Shared
 @inject ContactService ContactService
 
-<h1>📒 Mon Annuaire</h1>
-<p>@contacts.Count contact(s) enregistré(s)</p>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
 
-<FilterContact OnTapWord="TrieContact"/>
+    @* ===== HEADER ===== *@
+    <div class="max-w-6xl mx-auto mb-8">
+        <div class="bg-white rounded-2xl shadow-lg p-8 flex items-center justify-between">
+            <div>
+                <h1 class="text-4xl font-extrabold text-indigo-700 mb-1">📒 Mon Annuaire</h1>
+                <p class="text-gray-400 text-sm">Gérez vos contacts facilement</p>
+            </div>
+            <div class="bg-indigo-50 rounded-xl px-6 py-4 text-center">
+                <p class="text-4xl font-extrabold text-indigo-600">@contacts.Count</p>
+                <p class="text-gray-400 text-xs">contact(s)</p>
+            </div>
+        </div>
+    </div>
 
-@* Formulaire pour ajouter *@
-<FormulaireContact OnAjouter="AjouterContact" />
+    <div class="max-w-6xl mx-auto">
 
-@* Liste des contacts *@
-<div class="grille">
-    @foreach (var contact in contacts)
-    {
-        <CarteContact Contact="contact" OnSupprimer="SupprimerContact" />
-    }
+        @* ===== FORMULAIRE ===== *@
+        <FormulaireContact OnAjouter="AjouterContact" />
+
+        @* ===== BARRE DE RECHERCHE ===== *@
+        <FilterContact OnTapWord="TrieContact" />
+
+        @* ===== LISTE VIDE ===== *@
+        @if (!contacts.Any())
+        {
+            <div class="bg-white rounded-2xl shadow p-12 text-center mt-6">
+                <p class="text-6xl mb-4">🔍</p>
+                <p class="text-gray-400 text-lg font-medium">Aucun contact trouvé</p>
+                <p class="text-gray-300 text-sm">Essayez un autre mot clé ou ajoutez un contact</p>
+            </div>
+        }
+        else
+        {
+            @* ===== GRILLE DES CONTACTS ===== *@
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                @foreach (var contact in contacts)
+                {
+                    <CarteContact Contact="contact" OnSupprimer="SupprimerContact" />
+                }
+            </div>
+        }
+
+    </div>
+
 </div>
 
 @code {
     private List<Contact> contacts = new();
-    private List<Contact> tousLesContacts = new(); // ← garde une copie de l'original
+    private List<Contact> tousLesContacts = new();
 
-
-    // Chargement initial des contacts
     protected override void OnInitialized()
     {
-       tousLesContacts = ContactService.GetContacts();
-        contacts=tousLesContacts;
+        tousLesContacts = ContactService.GetContacts();
+        contacts = tousLesContacts;
     }
 
     private void AjouterContact(Contact contact)
     {
         ContactService.AjouterContact(contact);
-        contacts = ContactService.GetContacts();
+        tousLesContacts = ContactService.GetContacts();
+        contacts = tousLesContacts;
+        StateHasChanged();
     }
 
     private void SupprimerContact(int id)
     {
         ContactService.SupprimerContact(id);
-        contacts = ContactService.GetContacts();
+        tousLesContacts = ContactService.GetContacts();
+        contacts = tousLesContacts;
+        StateHasChanged();
     }
 
     private void TrieContact(string word)
     {
         if (string.IsNullOrEmpty(word))
-        {
-            // Si la recherche est vide, remet tous les contacts
             contacts = tousLesContacts;
-        }
         else
-        {
-            // Where filtre et retourne seulement ceux qui correspondent
             contacts = tousLesContacts
                 .Where(c => c.Prenom.ToLower().Contains(word.ToLower())
                          || c.Nom.ToLower().Contains(word.ToLower()))
                 .ToList();
-        }
         StateHasChanged();
     }
 }
