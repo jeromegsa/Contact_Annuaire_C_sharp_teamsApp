@@ -15,9 +15,11 @@ namespace contact_annuaire.Services
         {
             return _contacts;
         }
-        public void AjouterContact(Contact Contact)
+        public void AjouterContact(Contact contact)
         {
-            Contact.Id = _contacts.Count + 1;
+            contact.Id = _contacts.Count + 1;
+            _contacts.Add(contact);
+
         }
         public void SupprimerContact(int id)
         {

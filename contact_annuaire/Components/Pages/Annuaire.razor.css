@@ -1,0 +1,33 @@
+﻿/* ===== PAGE PRINCIPALE ===== */
+h1 {
+    font-size: 1.8rem;
+    color: #1a1a2e;
+    margin-bottom: 0.3rem;
+}
+
+p {
+    color: #888;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+}
+
+/* ===== GRILLE DES CONTACTS ===== */
+.grille {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .grille {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .grille {
+        grid-template-columns: 1fr;
+    }
+}

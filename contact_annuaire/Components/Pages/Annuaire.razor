@@ -7,6 +7,8 @@
 <h1>📒 Mon Annuaire</h1>
 <p>@contacts.Count contact(s) enregistré(s)</p>
 
+<FilterContact OnTapWord="TrieContact"/>
+
 @* Formulaire pour ajouter *@
 <FormulaireContact OnAjouter="AjouterContact" />
 
@@ -20,25 +22,43 @@
 
 @code {
     private List<Contact> contacts = new();
+    private List<Contact> tousLesContacts = new(); // ← garde une copie de l'original
+
 
     // Chargement initial des contacts
     protected override void OnInitialized()
     {
-        contacts = ContactService.GetContacts();
+       tousLesContacts = ContactService.GetContacts();
+        contacts=tousLesContacts;
     }
 
-    // Ajouter un contact
     private void AjouterContact(Contact contact)
     {
         ContactService.AjouterContact(contact);
-        contacts = ContactService.GetContacts(); // rafraîchit la liste
-        
+        contacts = ContactService.GetContacts();
     }
 
-    // Supprimer un contact
     private void SupprimerContact(int id)
     {
         ContactService.SupprimerContact(id);
-        contacts = ContactService.GetContacts(); // rafraîchit la liste
+        contacts = ContactService.GetContacts();
+    }
+
+    private void TrieContact(string word)
+    {
+        if (string.IsNullOrEmpty(word))
+        {
+            // Si la recherche est vide, remet tous les contacts
+            contacts = tousLesContacts;
+        }
+        else
+        {
+            // Where filtre et retourne seulement ceux qui correspondent
+            contacts = tousLesContacts
+                .Where(c => c.Prenom.ToLower().Contains(word.ToLower())
+                         || c.Nom.ToLower().Contains(word.ToLower()))
+                .ToList();
+        }
+        StateHasChanged();
     }
 }

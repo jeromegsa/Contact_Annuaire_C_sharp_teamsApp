@@ -1,0 +1,60 @@
+﻿/* ===== FORMULAIRE ===== */
+.formulaire {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #f0f0f0;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+    /* ===== TITRE ===== */
+    .formulaire h3 {
+        width: 100%;
+        margin: 0 0 0.5rem 0;
+        font-size: 1.1rem;
+        color: #1a1a2e;
+    }
+
+    /* ===== CHAMPS INPUT ===== */
+    .formulaire input {
+        flex: 1;
+        min-width: 150px;
+        padding: 0.6rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: #1a1a2e;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }
+
+        .formulaire input:focus {
+            border-color: #0078d4;
+            box-shadow: 0 0 0 3px rgba(0,120,212,0.1);
+        }
+
+        .formulaire input::placeholder {
+            color: #bbb;
+        }
+
+    /* ===== BOUTON AJOUTER ===== */
+    .formulaire button {
+        padding: 0.6rem 1.5rem;
+        background: #0078d4;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        white-space: nowrap;
+    }
+
+        .formulaire button:hover {
+            background: #005a9e;
+        }

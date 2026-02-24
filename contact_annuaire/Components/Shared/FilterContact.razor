@@ -1,0 +1,13 @@
+﻿<div>
+    <h3>FilterContact</h3>
+
+    <input type="search" placeholder="tape to search" @oninput= "(e)=> OnTapWord.InvokeAsync(e.Value.ToString())"/>
+
+</div>
+@code {
+
+    [Parameter]
+    public EventCallback<string> OnTapWord { get; set; }
+     
+
+}
