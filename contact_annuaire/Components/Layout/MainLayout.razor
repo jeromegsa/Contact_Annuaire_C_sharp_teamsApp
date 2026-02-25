@@ -1,2 +1,94 @@
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Hosting
+@using Microsoft.Extensions.Configuration
+@using Azure.Core
+@using Azure.Identity
+@using Microsoft.Graph
+@using contact_annuaire.Components.Shared
 @inherits LayoutComponentBase
-@Body
+@inject TeamsUserCredential teamsUserCredential
+@inject IWebHostEnvironment HostEnvironment
+@inject IConfiguration Configuration
+
+@if (isLoading)
+{
+    <div class="flex items-center justify-center min-h-screen">
+        <FluentProgressRing />
+    </div>
+}
+else
+{
+    <NavBar UserName="@userName"
+            UserEmail="@userEmail"
+            UserPoste="@userPoste"
+            UserDepartement="@userDepartement" />
+    <main>
+        @Body
+    </main>
+}
+
+@code {
+    private string userName;
+    private string userEmail;
+    private string userPoste;
+    private string userDepartement;
+    private bool isLoading = true;
+
+    private readonly string _scope = "User.Read";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        try
+        {
+            if (firstRender)
+            {
+                // 1. Récupère les infos de base via TeamsUserCredential
+                var user = await teamsUserCredential.GetUserInfoAsync();
+                userName = user.DisplayName;
+                userEmail = user.PreferredUserName;
+
+                // 2. Récupère le profil complet via Microsoft Graph
+                var tokenCredential = await GetOnBehalfOfCredential();
+                var graph = GetGraphServiceClient(tokenCredential);
+                var profile = await graph.Me.GetAsync();
+
+                if (profile != null)
+                {
+                    userPoste = profile.JobTitle ?? "";
+                    userDepartement = profile.Department ?? "";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur : {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    // Même logique que Graph.razor
+    private async Task<OnBehalfOfCredential> GetOnBehalfOfCredential()
+    {
+        var config = Configuration.Get<ConfigOptions>();
+        var tenantId = config.TeamsFx.Authentication.OAuthAuthority
+            .Remove(0, "https://login.microsoftonline.com/".Length);
+        AccessToken ssoToken = await teamsUserCredential.GetTokenAsync(
+            new TokenRequestContext(null), new CancellationToken());
+        return new OnBehalfOfCredential(
+            tenantId,
+            config.TeamsFx.Authentication.ClientId,
+            config.TeamsFx.Authentication.ClientSecret,
+            ssoToken.Token
+        );
+    }
+
+    private GraphServiceClient GetGraphServiceClient(TokenCredential tokenCredential)
+    {
+        return new GraphServiceClient(tokenCredential, new string[] { _scope });
+    }
+}

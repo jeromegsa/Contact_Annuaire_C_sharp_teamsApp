@@ -1,0 +1,171 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@inject NavigationManager Navigation
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-indigo-600 shadow-lg">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+
+        @* ===== LOGO ===== *@
+        <div class="flex items-center gap-3 cursor-pointer" @onclick='() => Navigation.NavigateTo("/")'>
+            <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center">
+                <span class="text-indigo-700 font-extrabold text-lg">📒</span>
+            </div>
+            <span class="text-white font-bold text-lg tracking-wide">Contact Annuaire</span>
+        </div>
+
+        @* ===== LIENS DE NAVIGATION ===== *@
+        <div class="flex items-center gap-2">
+            <NavLink href="/annuaire"
+                     class="text-indigo-200 hover:text-white hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                     ActiveClass="bg-amber-400 text-indigo-900 font-semibold">
+                📒 Annuaire
+            </NavLink>
+            <NavLink href="/graph"
+                     class="text-indigo-200 hover:text-white hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                     ActiveClass="bg-amber-400 text-indigo-900 font-semibold">
+                📊 Graph
+            </NavLink>
+        </div>
+
+        @* ===== DROITE : NOTIFICATION + AVATAR ===== *@
+        <div class="flex items-center gap-4">
+
+            @* Cloche de notification *@
+            <div class="relative cursor-pointer" @onclick="ToggleNotification">
+                <span class="text-indigo-200 hover:text-white text-xl transition-colors duration-200">🔔</span>
+                @if (notificationCount > 0)
+                {
+                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                        @notificationCount
+                    </span>
+                }
+            </div>
+
+            @* Dropdown notification *@
+            @if (showNotification)
+            {
+                <div class="absolute top-16 right-32 bg-white rounded-xl shadow-xl border border-gray-100 w-72 z-50">
+                    <div class="p-4 border-b border-gray-100">
+                        <p class="font-semibold text-gray-700 text-sm">Notifications</p>
+                    </div>
+                    <div class="p-4 text-sm text-gray-400 text-center">
+                        Aucune nouvelle notification
+                    </div>
+                </div>
+            }
+
+            @* ===== AVATAR + DROPDOWN ===== *@
+            <div class="relative">
+
+                @* Bouton avatar *@
+                <button class="w-10 h-10 rounded-full bg-white text-indigo-700 font-extrabold text-sm flex items-center justify-center hover:ring-2 hover:ring-white hover:ring-offset-2 hover:ring-offset-indigo-700 transition-all duration-200 uppercase"
+                        @onclick="ToggleDropdown">
+                    @GetInitiales()
+                </button>
+
+                @* Dropdown utilisateur *@
+                @if (showDropdown)
+                {
+                    <div class="absolute right-0 top-12 bg-white rounded-xl shadow-xl border border-gray-100 w-72 z-50">
+
+                        @* Header du dropdown *@
+                        <div class="p-4 border-b border-gray-100 flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-indigo-700 text-white font-extrabold flex items-center justify-center text-lg uppercase">
+                                @GetInitiales()
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-800 text-sm">@UserName</p>
+                                <p class="text-gray-400 text-xs">@UserEmail</p>
+                            </div>
+                        </div>
+
+                        @* Infos utilisateur *@
+                        <div class="p-4 space-y-3">
+                            @if (!string.IsNullOrEmpty(UserPoste))
+                            {
+                                <div class="flex items-center gap-3 text-sm text-gray-600">
+                                    <span>💼</span>
+                                    <span>@UserPoste</span>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(UserDepartement))
+                            {
+                                <div class="flex items-center gap-3 text-sm text-gray-600">
+                                    <span>🏢</span>
+                                    <span>@UserDepartement</span>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(UserEmail))
+                            {
+                                <div class="flex items-center gap-3 text-sm text-gray-600">
+                                    <span>✉️</span>
+                                    <span>@UserEmail</span>
+                                </div>
+                            }
+                        </div>
+
+                        @* Séparateur *@
+                        <div class="border-t border-gray-100 p-3">
+                            <button class="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200">
+                                🚪 Se déconnecter
+                            </button>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</nav>
+
+@* Espace pour compenser la navbar fixe *@
+<div class="h-16"></div>
+
+@* Overlay pour fermer les dropdowns en cliquant ailleurs *@
+@if (showDropdown || showNotification)
+{
+    <div class="fixed inset-0 z-40" @onclick="FermerTout"></div>
+}
+
+@code {
+    [Parameter] public string UserName { get; set; }
+    [Parameter] public string UserEmail { get; set; }
+    [Parameter] public string UserPoste { get; set; }
+    [Parameter] public string UserDepartement { get; set; }
+
+    private bool showDropdown = false;
+    private bool showNotification = false;
+    private int notificationCount = 0;
+
+    private void ToggleDropdown()
+    {
+        showDropdown = !showDropdown;
+        showNotification = false;
+    }
+
+    private void ToggleNotification()
+    {
+        showNotification = !showNotification;
+        showDropdown = false;
+    }
+
+    private void FermerTout()
+    {
+        showDropdown = false;
+        showNotification = false;
+    }
+
+    private string GetInitiales()
+    {
+        if (string.IsNullOrEmpty(UserName)) return "?";
+
+        var parts = UserName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length >= 2)
+            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
+
+        if (parts.Length == 1)
+            return parts[0][0].ToString().ToUpper();
+
+        return "?";
+    }
+}

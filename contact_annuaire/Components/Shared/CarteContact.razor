@@ -3,30 +3,40 @@
 <div class="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
 
     <div class="flex items-center gap-4 mb-4">
-
         <span class="w-12 h-12 min-w-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-lg font-bold uppercase">
             @contact.Prenom[0]@contact.Nom[0]
         </span>
-
         <div>
             <h3 class="text-gray-800 font-semibold text-base m-0">@contact.Prenom @contact.Nom</h3>
             <p class="text-gray-400 text-sm m-0">@contact.Email</p>
         </div>
-
     </div>
 
     <p class="text-gray-500 text-sm mb-4">📞 @contact.Telephone</p>
 
-    <button class="w-full py-2 bg-red-50 text-red-600 border border-red-200 rounded-lg text-sm cursor-pointer hover:bg-red-200 transition-colors duration-200"
-            @onclick="() => OnSupprimer.InvokeAsync(contact.Id)">
-        Supprimer
-    </button>
+    <div class="flex gap-2">
+        @* Bouton Modifier *@
+        <button class="flex-1 py-2 bg-indigo-50 text-indigo-600 border border-indigo-200 rounded-lg text-sm cursor-pointer hover:bg-indigo-200 transition-colors duration-200"
+                @onclick="() => OnModifier.InvokeAsync(contact.Id)">
+            ✏️ Modifier
+        </button>
+
+        @* Bouton Supprimer *@
+        <button class="flex-1 py-2 bg-red-50 text-red-600 border border-red-200 rounded-lg text-sm cursor-pointer hover:bg-red-200 transition-colors duration-200"
+                @onclick="() => OnSupprimer.InvokeAsync(contact.Id)">
+            🗑️ Supprimer
+        </button>
+    </div>
 
 </div>
 
 @code {
     [Parameter]
     public Contact contact { get; set; }
+
     [Parameter]
     public EventCallback<int> OnSupprimer { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnModifier { get; set; }
 }

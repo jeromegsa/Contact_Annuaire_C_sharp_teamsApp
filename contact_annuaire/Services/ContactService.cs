@@ -21,6 +21,19 @@ namespace contact_annuaire.Services
             _contacts.Add(contact);
 
         }
+        public void ModifierContact(Contact contactModifie)
+        {
+            // On trouve le contact existant par son Id
+            var contact = _contacts.FirstOrDefault(c => c.Id == contactModifie.Id);
+            if (contact != null)
+            {
+                // On met à jour ses propriétés
+                contact.Prenom = contactModifie.Prenom;
+                contact.Nom = contactModifie.Nom;
+                contact.Email = contactModifie.Email;
+                contact.Telephone = contactModifie.Telephone;
+            }
+        }
         public void SupprimerContact(int id)
         {
             var contact = _contacts.FirstOrDefault(c=>c.Id==id);
