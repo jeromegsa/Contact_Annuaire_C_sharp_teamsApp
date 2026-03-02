@@ -20,6 +20,7 @@ builder.Services.AddAntiforgery(o => o.SuppressXFrameOptionsHeader = true);
 
 builder.Services.AddSingleton<LibraryConfiguration>();
 builder.Services.AddSingleton<ContactService>();
+builder.Services.AddScoped<SharePointService>();
 
 
 var app = builder.Build();

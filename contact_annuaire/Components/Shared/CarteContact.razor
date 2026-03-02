@@ -4,7 +4,7 @@
 
     <div class="flex items-center gap-4 mb-4">
         <span class="w-12 h-12 min-w-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-lg font-bold uppercase">
-            @contact.Prenom[0]@contact.Nom[0]
+          @GetInitiales()
         </span>
         <div>
             <h3 class="text-gray-800 font-semibold text-base m-0">@contact.Prenom @contact.Nom</h3>
@@ -39,4 +39,10 @@
 
     [Parameter]
     public EventCallback<int> OnModifier { get; set; }
+    private string GetInitiales()
+    {
+        var prenom = !string.IsNullOrEmpty(contact.Prenom) ? contact.Prenom[0].ToString() : "?";
+        var nom = !string.IsNullOrEmpty(contact.Nom) ? contact.Nom[0].ToString() : "?";
+        return $"{prenom}{nom}".ToUpper();
+    }
 }

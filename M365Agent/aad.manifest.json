@@ -96,12 +96,16 @@
     "requiredResourceAccess": [
         {
             "resourceAppId": "Microsoft Graph",
-            "resourceAccess": [
-                {
-                    "id": "User.Read",
-                    "type": "Scope"
-                }
-            ]
+          "resourceAccess": [
+            {
+              "id": "User.Read",
+              "type": "Scope"
+            },
+            {
+              "id": "Sites.ReadWrite.All",
+              "type": "Scope"
+            }
+          ]
         }
     ],
     "web": {
